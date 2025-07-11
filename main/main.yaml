@@ -18,7 +18,6 @@ parameters:
       - VM5
       - VM6
 
-
 steps:
   - script: |
       echo "Fruit: ${{ parameters.fruit }}"

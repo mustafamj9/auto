@@ -7,21 +7,21 @@ parameters:
       - banana
       - cherry
 
-variables:
-  vmTargets: ${{ 
-    if eq(parameters.softwareVersion, 'apple') }}:
-      - 'VM0'
-      - 'VM1'
-  ${{ if eq(parameters.softwareVersion, 'banana') }}:
-      - 'VM2'
-      - 'VM4'
-  ${{ if eq(parameters.softwareVersion, 'cherry') }}:
-      - 'VM5'
-      - 'VM6'
-
 steps:
   - script: |
-      echo "Selected software version: ${{ parameters.softwareVersion }}"
-      echo "Target VMs:"
-      echo "${{ join(variables.vmTargets, ', ') }}"
-    displayName: 'Show selected software and target VMs'
+      echo "Selected version: apple"
+      echo "Target VMs: VM0, VM1"
+    displayName: "Apple targets"
+    condition: eq('${{ parameters.softwareVersion }}', 'apple')
+
+  - script: |
+      echo "Selected version: banana"
+      echo "Target VMs: VM2, VM4"
+    displayName: "Banana targets"
+    condition: eq('${{ parameters.softwareVersion }}', 'banana')
+
+  - script: |
+      echo "Selected version: cherry"
+      echo "Target VMs: VM5, VM6"
+    displayName: "Cherry targets"
+    condition: eq('${{ parameters.softwareVersion }}', 'cherry')

@@ -34,24 +34,24 @@ steps:
 
 - script: echo "✅ Valid Apple VM: ${{ parameters.vm }}"
   displayName: 'Apple VM Deploy'
-  condition: and(eq(parameters.fruit, 'apple'), or(eq(parameters.vm, 'VM0'), eq(parameters.vm, 'VM1')))
+  condition: "and(eq(parameters.fruit, 'apple'), or(eq(parameters.vm, 'VM0'), eq(parameters.vm, 'VM1')))"
 
 - script: echo "✅ Valid Banana VM: ${{ parameters.vm }}"
   displayName: 'Banana VM Deploy'
-  condition: and(eq(parameters.fruit, 'banana'), or(eq(parameters.vm, 'VM2'), eq(parameters.vm, 'VM4')))
+  condition: "and(eq(parameters.fruit, 'banana'), or(eq(parameters.vm, 'VM2'), eq(parameters.vm, 'VM4')))"
 
 - script: echo "✅ Valid Cherry VM: ${{ parameters.vm }}"
   displayName: 'Cherry VM Deploy'
-  condition: and(eq(parameters.fruit, 'cherry'), or(eq(parameters.vm, 'VM5'), eq(parameters.vm, 'VM6')))
+  condition: "and(eq(parameters.fruit, 'cherry'), or(eq(parameters.vm, 'VM5'), eq(parameters.vm, 'VM6')))"
 
 - script: |
     echo "❌ Invalid fruit/VM combination"
     exit 1
   displayName: 'Invalid Selection'
-  condition: not(
+  condition: "not(
     or(
       and(eq(parameters.fruit, 'apple'), or(eq(parameters.vm, 'VM0'), eq(parameters.vm, 'VM1'))),
       and(eq(parameters.fruit, 'banana'), or(eq(parameters.vm, 'VM2'), eq(parameters.vm, 'VM4'))),
       and(eq(parameters.fruit, 'cherry'), or(eq(parameters.vm, 'VM5'), eq(parameters.vm, 'VM6')))
     )
-  )
+  )"

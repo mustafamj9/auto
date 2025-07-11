@@ -28,21 +28,21 @@ pool:
 
 steps:
   - script: |
-      echo "Selected fruit: ${{ parameters.fruit }}"
-      echo "Selected VM: ${{ parameters.vm }}"
+      echo "Selected fruit: $(fruit)"
+      echo "Selected VM: $(vm)"
     displayName: 'Show Inputs'
 
-  - script: echo "✅ Valid Apple VM: ${{ parameters.vm }}"
+  - script: echo "✅ Valid Apple VM: $(vm)"
     displayName: 'Apple VM Deploy'
-    condition: and(eq('${{ parameters.fruit }}', 'apple'), or(eq('${{ parameters.vm }}', 'VM0'), eq('${{ parameters.vm }}', 'VM1')))
+    condition: and(eq(variables['fruit'], 'apple'), or(eq(variables['vm'], 'VM0'), eq(variables['vm'], 'VM1')))
 
-  - script: echo "✅ Valid Banana VM: ${{ parameters.vm }}"
+  - script: echo "✅ Valid Banana VM: $(vm)"
     displayName: 'Banana VM Deploy'
-    condition: and(eq('${{ parameters.fruit }}', 'banana'), or(eq('${{ parameters.vm }}', 'VM2'), eq('${{ parameters.vm }}', 'VM4')))
+    condition: and(eq(variables['fruit'], 'banana'), or(eq(variables['vm'], 'VM2'), eq(variables['vm'], 'VM4')))
 
-  - script: echo "✅ Valid Cherry VM: ${{ parameters.vm }}"
+  - script: echo "✅ Valid Cherry VM: $(vm)"
     displayName: 'Cherry VM Deploy'
-    condition: and(eq('${{ parameters.fruit }}', 'cherry'), or(eq('${{ parameters.vm }}', 'VM5'), eq('${{ parameters.vm }}', 'VM6')))
+    condition: and(eq(variables['fruit'], 'cherry'), or(eq(variables['vm'], 'VM5'), eq(variables['vm'], 'VM6')))
 
   - script: |
       echo "❌ Invalid fruit/VM combination"
@@ -50,7 +50,8 @@ steps:
     displayName: 'Invalid Selection'
     condition: not(
       or(
-        and(eq('${{ parameters.fruit }}', 'apple'), or(eq('${{ parameters.vm }}', 'VM0'), eq('${{ parameters.vm }}', 'VM1'))),
-        and(eq('${{ parameters.fruit }}', 'banana'), or(eq('${{ parameters.vm }}', 'VM2'), eq('${{ parameters.vm }}', 'VM4'))),
-        and(eq('${{ parameters.fruit }}', 'cherry'), or(eq('${{ parameters.vm }}', 'VM5'), eq('${{ parameters.vm }}', 'VM6')))
+        and(eq(variables['fruit'], 'apple'), or(eq(variables['vm'], 'VM0'), eq(variables['vm'], 'VM1'))),
+        and(eq(variables['fruit'], 'banana'), or(eq(variables['vm'], 'VM2'), eq(variables['vm'], 'VM4'))),
+        and(eq(variables['fruit'], 'cherry'), or(eq(variables['vm'], 'VM5'), eq(variables['vm'], 'VM6')))
       )
+    )

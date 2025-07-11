@@ -1,3 +1,8 @@
+trigger:
+  branches:
+    include:
+      - main
+
 parameters:
   - name: fruit
     displayName: Select fruit (software version)
@@ -18,23 +23,26 @@ parameters:
       - VM5
       - VM6
 
+pool:
+  vmImage: 'windows-latest'
+
 steps:
   - script: |
       echo "Fruit: ${{ parameters.fruit }}"
       echo "VM: ${{ parameters.vm }}"
-    displayName: 'User selections'
+    displayName: 'Show Selections'
 
   - ${{ if and(eq(parameters.fruit, 'apple'), or(eq(parameters.vm, 'VM0'), eq(parameters.vm, 'VM1'))) }}:
     - script: echo "✅ Valid Apple VM: ${{ parameters.vm }}"
-      displayName: 'Valid Apple VM'
+      displayName: 'Deploy to Apple VM'
 
   - ${{ if and(eq(parameters.fruit, 'banana'), or(eq(parameters.vm, 'VM2'), eq(parameters.vm, 'VM4'))) }}:
     - script: echo "✅ Valid Banana VM: ${{ parameters.vm }}"
-      displayName: 'Valid Banana VM'
+      displayName: 'Deploy to Banana VM'
 
   - ${{ if and(eq(parameters.fruit, 'cherry'), or(eq(parameters.vm, 'VM5'), eq(parameters.vm, 'VM6'))) }}:
     - script: echo "✅ Valid Cherry VM: ${{ parameters.vm }}"
-      displayName: 'Valid Cherry VM'
+      displayName: 'Deploy to Cherry VM'
 
   - ${{ if not(
         or(
@@ -43,5 +51,7 @@ steps:
           and(eq(parameters.fruit, 'cherry'), or(eq(parameters.vm, 'VM5'), eq(parameters.vm, 'VM6')))
         )
     ) }}:
-    - script: echo "❌ Invalid combination of fruit and VM!"
-      displayName: 'Invalid Selection'
+    - script: |
+        echo "❌ Invalid combination of fruit and VM!"
+        exit 1
+      displayName: 'Invalid Combination - Failing'

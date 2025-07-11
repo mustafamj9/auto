@@ -1,27 +1,48 @@
 parameters:
-  - name: softwareVersion
-    displayName: Select software version
+  - name: fruit
+    displayName: Select fruit (software version)
     type: string
     values:
       - apple
       - banana
       - cherry
 
+  - name: vm
+    displayName: Select target VM
+    type: string
+    values:
+      - VM0
+      - VM1
+      - VM2
+      - VM4
+      - VM5
+      - VM6
+
+
 steps:
   - script: |
-      echo "Selected version: apple"
-      echo "Target VMs: VM0, VM1"
-    displayName: "Apple targets"
-    condition: eq('${{ parameters.softwareVersion }}', 'apple')
+      echo "Fruit: ${{ parameters.fruit }}"
+      echo "VM: ${{ parameters.vm }}"
+    displayName: 'User selections'
 
-  - script: |
-      echo "Selected version: banana"
-      echo "Target VMs: VM2, VM4"
-    displayName: "Banana targets"
-    condition: eq('${{ parameters.softwareVersion }}', 'banana')
+  - ${{ if and(eq(parameters.fruit, 'apple'), or(eq(parameters.vm, 'VM0'), eq(parameters.vm, 'VM1'))) }}:
+    - script: echo "✅ Valid Apple VM: ${{ parameters.vm }}"
+      displayName: 'Valid Apple VM'
 
-  - script: |
-      echo "Selected version: cherry"
-      echo "Target VMs: VM5, VM6"
-    displayName: "Cherry targets"
-    condition: eq('${{ parameters.softwareVersion }}', 'cherry')
+  - ${{ if and(eq(parameters.fruit, 'banana'), or(eq(parameters.vm, 'VM2'), eq(parameters.vm, 'VM4'))) }}:
+    - script: echo "✅ Valid Banana VM: ${{ parameters.vm }}"
+      displayName: 'Valid Banana VM'
+
+  - ${{ if and(eq(parameters.fruit, 'cherry'), or(eq(parameters.vm, 'VM5'), eq(parameters.vm, 'VM6'))) }}:
+    - script: echo "✅ Valid Cherry VM: ${{ parameters.vm }}"
+      displayName: 'Valid Cherry VM'
+
+  - ${{ if not(
+        or(
+          and(eq(parameters.fruit, 'apple'), or(eq(parameters.vm, 'VM0'), eq(parameters.vm, 'VM1'))),
+          and(eq(parameters.fruit, 'banana'), or(eq(parameters.vm, 'VM2'), eq(parameters.vm, 'VM4'))),
+          and(eq(parameters.fruit, 'cherry'), or(eq(parameters.vm, 'VM5'), eq(parameters.vm, 'VM6')))
+        )
+    ) }}:
+    - script: echo "❌ Invalid combination of fruit and VM!"
+      displayName: 'Invalid Selection'

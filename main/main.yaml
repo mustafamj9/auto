@@ -1,8 +1,27 @@
 parameters:
-  - name: environment
-    displayName: Enter the fruits
+  - name: softwareVersion
+    displayName: Select software version
     type: string
     values:
       - apple
       - banana
       - cherry
+
+variables:
+  vmTargets: ${{ 
+    if eq(parameters.softwareVersion, 'apple') }}:
+      - 'VM0'
+      - 'VM1'
+  ${{ if eq(parameters.softwareVersion, 'banana') }}:
+      - 'VM2'
+      - 'VM4'
+  ${{ if eq(parameters.softwareVersion, 'cherry') }}:
+      - 'VM5'
+      - 'VM6'
+
+steps:
+  - script: |
+      echo "Selected software version: ${{ parameters.softwareVersion }}"
+      echo "Target VMs:"
+      echo "${{ join(variables.vmTargets, ', ') }}"
+    displayName: 'Show selected software and target VMs'

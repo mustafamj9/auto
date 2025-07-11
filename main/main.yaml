@@ -2,7 +2,7 @@ parameters:
   - name: environment
     displayName: Enter the fruits
     type: string
-    Value:
+    values:
       - apple
       - banana
       - cherry
